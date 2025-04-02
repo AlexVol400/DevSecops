@@ -50,8 +50,5 @@ def check_credentials():
             utc_now = datetime.utcnow().replace(tzinfo=pytz.UTC)
 
             if utc_now > expiration_time:
-                return jsonify({"error": "Session has expired. Please log in again."}), 401
-        except ValueError:
-            return jsonify({"error": "Invalid expiration time format. Please check the format."}), 500
-
+                return jsonify({"error": "Session has expired. Please log in again."}), 400
     return True
