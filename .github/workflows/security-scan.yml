@@ -43,7 +43,7 @@ jobs:
               --exit-code 1 2>&1 | tee gitleaks-output.txt || true
           else
             echo "Full branch scan"
-            ./gitleaks detect --source . --no-git \
+            ./gitleaks detect --source . \
               --report-format sarif \
               --report-path gitleaks-results.sarif \
               --exit-code 0 2>&1 | tee gitleaks-output.txt
@@ -83,14 +83,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Detect languages
-        id: detect
-        uses: github/codeql-action/resolve-languages@v3
-
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
-          languages: ${{ steps.detect.outputs.languages }}
+          languages: javascript-typescript
+          build-mode: none  # ← skips build entirely, no npm needed
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
