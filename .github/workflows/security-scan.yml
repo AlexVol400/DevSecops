@@ -34,12 +34,23 @@ jobs:
           wget https://github.com/gitleaks/gitleaks/releases/download/v${VERSION}/gitleaks_${VERSION}_linux_x64.tar.gz
           tar -xzf gitleaks_${VERSION}_linux_x64.tar.gz
 
-          # Pre-create empty SARIF so upload never fails
+          # Pre-create valid SARIF so upload never fails
           cat > gitleaks-results.sarif << 'EOF'
           {
             "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
             "version": "2.1.0",
-            "runs": []
+            "runs": [
+              {
+                "tool": {
+                  "driver": {
+                    "name": "Gitleaks",
+                    "version": "1.0.0",
+                    "rules": []
+                  }
+                },
+                "results": []
+              }
+            ]
           }
           EOF
 
