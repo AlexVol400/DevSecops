@@ -72,7 +72,7 @@ jobs:
           category: gitleaks
 
   # ============================================
-  # CODEQL - Scans JavaScript/TypeScript code
+  # CODEQL - Auto detects language
   # ============================================
   codeql:
     name: CodeQL Analysis
@@ -83,27 +83,17 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Detect languages
+        id: detect
+        uses: github/codeql-action/resolve-languages@v3
+
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
-          languages: javascript-typescript
-
-      - name: Use Node 22
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22.x'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build app
-        run: npm run build
+          languages: ${{ steps.detect.outputs.languages }}
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
-        with:
-          category: codeql-javascript
 
   # ============================================
   # DEPENDENCY SCANNING
