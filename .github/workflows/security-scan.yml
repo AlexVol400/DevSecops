@@ -37,13 +37,16 @@ jobs:
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             echo "PR detected - scanning changed commits only"
             ./gitleaks detect --source . \
-              --log-opts="origin/${{ github.base_ref }}..HEAD" \
+              --no-git \
+              --config .gitleaks.toml \
               --report-format sarif \
               --report-path gitleaks-results.sarif \
               --exit-code 1 2>&1 | tee gitleaks-output.txt || true
           else
             echo "Full branch scan"
             ./gitleaks detect --source . \
+              --no-git \
+              --config .gitleaks.toml \
               --report-format sarif \
               --report-path gitleaks-results.sarif \
               --exit-code 0 2>&1 | tee gitleaks-output.txt
