@@ -75,7 +75,7 @@ jobs:
           category: gitleaks
 
   # ============================================
-  # CODEQL - Auto detects language
+  # CODEQL - Scans Python code
   # ============================================
   codeql:
     name: CodeQL Analysis
@@ -90,7 +90,7 @@ jobs:
         uses: github/codeql-action/init@v3
         with:
           languages: python
-          build-mode: none  # ← skips build entirely, no npm needed
+          build-mode: none
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
