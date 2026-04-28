@@ -86,7 +86,7 @@ jobs:
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
-          languages: javascript-typescript
+          languages: python
           build-mode: none  # ← skips build entirely, no npm needed
 
       - name: Perform CodeQL Analysis
