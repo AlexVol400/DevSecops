@@ -58,7 +58,6 @@ jobs:
             echo "PR detected - scanning changed commits only"
             ./gitleaks detect --source . \
               --no-git \
-              --config .gitleaks.toml \
               --report-format sarif \
               --report-path gitleaks-results.sarif \
               --exit-code 1 2>&1 | tee gitleaks-output.txt || true
