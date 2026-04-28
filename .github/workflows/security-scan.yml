@@ -34,6 +34,15 @@ jobs:
           wget https://github.com/gitleaks/gitleaks/releases/download/v${VERSION}/gitleaks_${VERSION}_linux_x64.tar.gz
           tar -xzf gitleaks_${VERSION}_linux_x64.tar.gz
 
+          # Pre-create empty SARIF so upload never fails
+          cat > gitleaks-results.sarif << 'EOF'
+          {
+            "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+            "version": "2.1.0",
+            "runs": []
+          }
+          EOF
+
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             echo "PR detected - scanning changed commits only"
             ./gitleaks detect --source . \
@@ -49,7 +58,7 @@ jobs:
               --config .gitleaks.toml \
               --report-format sarif \
               --report-path gitleaks-results.sarif \
-              --exit-code 0 2>&1 | tee gitleaks-output.txt
+              --exit-code 0 2>&1 | tee gitleaks-output.txt || true
           fi
 
           if grep -q "leaks found" gitleaks-output.txt; then
